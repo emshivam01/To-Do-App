@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("./Config/db").connect();
 const { urlencoded } = require("express");
 const express = require("express");
 const TodoRoutes = require("./Routes/TodoRoutes");
