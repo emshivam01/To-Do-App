@@ -1,16 +1,28 @@
 const mongoose = require("mongoose");
 
+const TaskSchema = new mongoose.Schema({
+  description: {
+    type: String,
+    required: true,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const TodoSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    trim: true,
-    maxLength: [25, "Title can be only 35 Character long"],
-  },
-  task: {
-    type: [String],
+    maxLength: 25,
     unique: true,
   },
+  tasks: [TaskSchema],
 });
 
-module.exports = mongoose.model("Todo", TodoSchema);
+TodoSchema.index({ task: null }, { unique: false });
+
+const Todo = mongoose.model("Todo", TodoSchema);
+
+module.exports = Todo;
