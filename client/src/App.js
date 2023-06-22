@@ -1,15 +1,16 @@
 import "./App.css";
 import AddTodo from "./Components/AddTodo";
-import Card from "./Components/Card";
+import Body from "./Components/Body";
 import { Navbar } from "./Components/Navbar";
+import AddTodoForm from "./Components/Testing";
 
 function App() {
   return (
     <div className="bg-[#121212] h-screen">
       <Navbar />
-      <Card />
-      <Card />
+      <Body />
       <AddTodo />
+      <AddTodoForm />
     </div>
   );
 }

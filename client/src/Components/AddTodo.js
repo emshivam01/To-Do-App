@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import axios from "axios";
 
 import AddIcon from "@mui/icons-material/Add";
 
@@ -9,7 +10,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 420,
+  width: 400,
   bgcolor: "#252525",
   border: "2px solid #000",
   borderRadius: "6px",
@@ -20,22 +21,37 @@ const style = {
 
 const AddTodo = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [responseBack, setResponseBack] = useState();
   const [todoTitle, setTodoTitle] = useState("");
 
   const handleToggle = () => {
     setIsOpen(isOpen ? false : true);
   };
 
+  const createTodo = async (e) => {
+    e.preventDefault();
+    const res = await axios({
+      method: "POST",
+      url: "http://localhost:4000/createTodo",
+      title: todoTitle,
+    });
+    setResponseBack(res);
+  };
+
   return (
     <div className="">
+      {console.log(responseBack, "45")}
+      {console.log(todoTitle, "46")}
+
       <button
         onClick={handleToggle}
         className="flex justify-center items-center fixed bottom-10 right-5 h-14 w-14 text-5xl bg-blue-500 text-white rounded-full p-5 shadow-lg hover:bg-blue-600"
       >
         <AddIcon fontSize="large" />
       </button>
-      <div>
+      <div className="">
         <Modal
+          className=""
           open={isOpen}
           onClose={handleToggle}
           aria-labelledby="modal-modal-title"
@@ -49,7 +65,11 @@ const AddTodo = () => {
               onChange={(e) => setTodoTitle(e.target.value)}
             />
 
-            <button className="w-full mt-8 bg-blue-600 px-5 py-2 rounded-md m-auto">
+            <button
+              type="submit"
+              onClick={createTodo}
+              className="w-full mt-8 bg-blue-600 px-5 py-2 rounded-md m-auto"
+            >
               Add Todo
             </button>
           </Box>
