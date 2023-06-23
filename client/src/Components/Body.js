@@ -19,7 +19,6 @@ const Body = () => {
 
   return (
     <>
-      {todos.length > 0 && console.log(todos[1], "18")}
       {todos.map((todo) => {
         return (
           <Card
