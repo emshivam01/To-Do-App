@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-
 import AddIcon from "@mui/icons-material/Add";
+import { AddTodoToast } from "../Utils/TodoToast.js";
 
 const style = {
   position: "absolute",
@@ -19,16 +19,16 @@ const style = {
   p: 4,
 };
 
-const AddTodo = () => {
+const AddTodo = ({ newTodo, setNewTodo }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [responseBack, setResponseBack] = useState();
+  const [responseBack, setResponseBack] = useState(null);
   const [title, setTitle] = useState("");
 
   const handleToggle = () => {
     setIsOpen(isOpen ? false : true);
   };
 
-  const handleSubmit = async (e) => {
+  const createTodo = async (e) => {
     e.preventDefault();
 
     try {
@@ -36,8 +36,9 @@ const AddTodo = () => {
         title,
       });
       setResponseBack(res.data);
+      AddTodoToast();
+      setNewTodo((newTodo) => newTodo + 1);
     } catch (error) {
-      console.error(error);
       setResponseBack("Error occurred while submitting the title");
     }
 
@@ -50,7 +51,7 @@ const AddTodo = () => {
     <div className="">
       <button
         onClick={handleToggle}
-        className="flex justify-center items-center fixed bottom-10 right-5 h-14 w-14 text-5xl bg-blue-500 text-white rounded-full p-5 shadow-lg hover:bg-blue-600"
+        className="flex justify-center items-center fixed bottom-10 right-5 md:bottom-14 md:right-14 lg:bottom-20 lg:right-14 h-14 w-14 lg:h-16 lg:w-16  bg-blue-500 text-white rounded-full p-5 shadow-lg hover:bg-blue-600"
       >
         <AddIcon fontSize="large" />
       </button>
@@ -63,7 +64,7 @@ const AddTodo = () => {
           aria-describedby="modal-modal-description"
         >
           <Box className="" sx={style}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={createTodo}>
               <input
                 className="w-full border-[1px] rounded-md bg-[#252525] text-xl text-white placeholder:text-xl p-5 focus:outline-none"
                 type="text"
