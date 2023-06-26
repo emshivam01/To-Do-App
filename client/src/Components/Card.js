@@ -2,16 +2,15 @@ import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import {
-  DeleteTodoToast,
-  EditTodoToast,
-  EmptyTodoToast,
-} from "../Utils/TodoToast";
-import { AddTaskToast } from "../Utils/TaskToast";
+import { EditTodoToast, EmptyTodoToast } from "../Utils/Toasts/TodoToast";
+
+import deleteTodo from "./Helpers/TodoHelper/deleteTodo";
+import deleteTask from "./Helpers/TaskHelper/DeleteTask";
+import createTask from "./Helpers/TaskHelper/CreateTask";
 
 const styleModal = {
   position: "absolute",
@@ -43,6 +42,7 @@ const style3 = {
 };
 
 const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
+  const cardRef = useRef();
   const [isDropDown, setDropDown] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [responseBack, setResponseBack] = useState();
@@ -52,28 +52,16 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
   const [editModalOpem, setEditModalOpen] = useState(false);
 
   const handleToggle = () => {
-    setIsOpen(isOpen ? false : true);
+    setIsOpen(!isOpen);
   };
 
   const handleEditModal = () => {
     setEditModalOpen(editModalOpem ? false : true);
   };
 
-  const createTask = async (e) => {
+  const handleCreateTask = (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`http://localhost:4000/createTask/${id}`, {
-        taskDesc: task,
-      });
-      setResponseBack(res.data);
-      fetchTodos();
-      AddTaskToast();
-    } catch (error) {
-      console.error(error);
-      setResponseBack(error.message);
-    }
-    setTask("");
-    setIsOpen(false);
+    createTask(fetchTodos, task, setTask, setIsOpen, setResponseBack, id);
   };
 
   const editTodo = async (e) => {
@@ -101,29 +89,43 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
     setEditModalOpen(editModalOpem ? false : true);
   };
 
-  const deleteTodo = async () => {
-    try {
-      const res = await axios.delete(`http://localhost:4000/deleteTodo/${id}`);
-      console.log(res.data);
-      DeleteTodoToast();
-      setNewTodo((newTodo) => newTodo + 1);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  useEffect(() => {
+    const handle = (e) => {
+      if (!cardRef.current.contains(e.target)) {
+        setDropDown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handle);
+
+    return () => {
+      document.removeEventListener("mousedown", handle);
+    };
+  });
 
   return (
-    <div className="bg-[#252525] h-fit w-80 lg:w-96  mx-5 my-8 p-4 md:p-6 rounded-md flex flex-col  ">
+    <div
+      ref={cardRef}
+      className="bg-[#252525] h-fit w-80 lg:w-96  mx-5 my-8 p-4 md:p-6 rounded-md flex flex-col  "
+    >
       <div className="flex justify-between items-center gap-2">
         <h2 className="text-white text-xl md:text-2xl font-medium truncate">
           {title}
         </h2>
         <div className="flex items-center gap-2 ">
-          <button className="text-white" onClick={handleEditModal}>
+          <button
+            title="Edit Todo"
+            className="text-white"
+            onClick={handleEditModal}
+          >
             <EditNoteRoundedIcon sx={style} />
           </button>
 
-          <button onClick={deleteTodo} className="text-white">
+          <button
+            title="Delete"
+            onClick={() => deleteTodo(setNewTodo, id)}
+            className="text-white"
+          >
             <DeleteForeverIcon sx={style2} />
           </button>
 
@@ -142,21 +144,30 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
         </div>
       </div>
 
+      <hr
+        className={`${
+          isDropDown ? "block" : "hidden"
+        } w-full h-[2px] mx-auto mt-6 bg-gray-100 border-0 rounded dark:bg-gray-700`}
+      />
+
       {isDropDown && tasks && tasks.length > 0 && (
         <div
-          className={`text-white text-lg mt-4 overflow-hidden transition-all duration-300 ${
+          className={`text-white text-lg mt-2 overflow-hidden transition-all duration-300 ${
             isDropDown ? "max-h-[200px]" : "max-h-0"
           }`}
         >
           <ul className="pl-8   list-disc">
             {tasks.map((task) => (
-              <div key={task._id} className="flex justify-between">
-                <li key={task._id}>
+              <div key={task._id} className="flex mt-2 justify-between">
+                <li key={task._id} id={task._id}>
                   {task.description
                     ? task.description
                     : "There's Nothing to do"}
                 </li>
-                <button className="text-white">
+                <button
+                  onClick={() => deleteTask(task._id, newTodo, setNewTodo, id)}
+                  className="text-white"
+                >
                   <DeleteForeverIcon sx={style2} />
                 </button>
               </div>
@@ -182,7 +193,7 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
         aria-describedby="modal-modal-description"
       >
         <Box className="" sx={styleModal}>
-          <form onSubmit={createTask}>
+          <form onSubmit={handleCreateTask}>
             <input
               className="w-full border-[1px] rounded-md bg-[#252525] text-xl text-white placeholder:text-xl p-5 focus:outline-none"
               type="text"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EditTodoToast } from "../Utils/TodoToast";
+import { EditTodoToast } from "../Utils/Toasts/TodoToast";
 
 const editTodo = async (
   e,

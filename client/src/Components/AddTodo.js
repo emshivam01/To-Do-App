@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import AddIcon from "@mui/icons-material/Add";
-import { AddTodoToast } from "../Utils/TodoToast.js";
+import { AddTodoToast, EmptyTodoToast } from "../Utils/Toasts/TodoToast.js";
 
 const style = {
   position: "absolute",
@@ -31,6 +31,12 @@ const AddTodo = ({ newTodo, setNewTodo }) => {
   const createTodo = async (e) => {
     e.preventDefault();
 
+    if (!title) {
+      // If newTitle is empty or falsy, exit the function
+      EmptyTodoToast();
+      return;
+    }
+
     try {
       const res = await axios.post("http://localhost:4000/createTodo", {
         title,
@@ -50,6 +56,7 @@ const AddTodo = ({ newTodo, setNewTodo }) => {
   return (
     <div className="">
       <button
+        title="Create Todo"
         onClick={handleToggle}
         className="flex justify-center items-center fixed bottom-10 right-5 md:bottom-14 md:right-14 lg:bottom-20 lg:right-14 h-14 w-14 lg:h-16 lg:w-16  bg-blue-500 text-white rounded-full p-5 shadow-lg hover:bg-blue-600"
       >
