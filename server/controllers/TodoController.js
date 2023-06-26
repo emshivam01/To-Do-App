@@ -8,15 +8,21 @@ const createTodo = async (req, res) => {
   const { title } = req.body;
 
   if (!title) {
-    res.status(404).send("Please enter a title");
+    return res.status(400).json({ status: "Failed", message: "Invalid Title" });
   }
 
   try {
-    const todo = new Todo({ title });
-    const data = await todo.save();
-    res.status(200).json({ status: "success", data: data });
+    const existedTodo = await Todo.findOne({ title: title });
+    if (existedTodo) {
+      res.status(500).send("Todo Already exists");
+    } else {
+      const todo = new Todo({ title });
+      const data = await todo.save();
+      return res.status(200).json({ status: "success", data: data });
+    }
   } catch (error) {
-    res.status(404).send(error.message);
+    console.error(error);
+    return res.status(500).send("Internal server error");
   }
 };
 

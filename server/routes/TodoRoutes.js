@@ -7,7 +7,11 @@ const {
   deleteTodo,
   editTodo,
 } = require("../controllers/TodoController");
-const { createTask } = require("../controllers/TaskController");
+const {
+  createTask,
+  editTask,
+  deleteTask,
+} = require("../controllers/TaskController");
 
 const router = express.Router();
 
@@ -15,11 +19,13 @@ router.get("/", home);
 router.post("/createTodo", createTodo);
 router.get("/getTodos", getTodos);
 router.get("/getTodo/:id", getTodo);
-router.get("/deleteTodo/:id", deleteTodo);
-router.get("/editTodo/:id", editTodo);
+router.delete("/deleteTodo/:id", deleteTodo);
+router.put("/editTodo/:id", editTodo);
 
 // Task Routes
 
 router.post("/createTask/:id", createTask);
+router.delete("/deleteTask/:id/:taskId", deleteTask);
+router.put("/editTask/:id", editTask);
 
 module.exports = router;
