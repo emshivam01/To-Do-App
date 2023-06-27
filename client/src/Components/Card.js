@@ -74,7 +74,7 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
     }
 
     try {
-      const res = await axios.put(`http://localhost:4000/editTodo/${id}`, {
+      const res = await axios.put(`https://todo-app-server-lime.vercel.app/editTodo/${id}`, {
         title: newTitle,
       });
       setResponseBack(res.data);

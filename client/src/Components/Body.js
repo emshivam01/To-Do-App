@@ -8,7 +8,9 @@ const Body = ({ newTodo, setNewTodo }) => {
   const [todos, setTodos] = useState([]);
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/getTodos");
+      const response = await axios.get(
+        "https://todo-app-server-lime.vercel.app/getTodos"
+      );
       setTodos(response.data.data);
     } catch (error) {
       console.error(error);

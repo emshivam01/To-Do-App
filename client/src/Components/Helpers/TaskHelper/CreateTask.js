@@ -17,9 +17,12 @@ const createTask = async (
       return;
     }
 
-    const res = await axios.post(`http://localhost:4000/createTask/${id}`, {
-      taskDesc: task,
-    });
+    const res = await axios.post(
+      `https://todo-app-server-lime.vercel.app/createTask/${id}`,
+      {
+        taskDesc: task,
+      }
+    );
     setResponseBack(res.data);
     fetchTodos();
     AddTaskToast();

@@ -15,9 +15,12 @@ const editTodo = async (
   e.preventDefault();
 
   try {
-    const res = await axios.put(`http://localhost:4000/editTodo/${id}`, {
-      title: newTitle,
-    });
+    const res = await axios.put(
+      `https://todo-app-server-lime.vercel.app/editTodo/${id}`,
+      {
+        title: newTitle,
+      }
+    );
     setResponseBack(res.data);
     setNewTodo((newTodo) => newTodo + 1);
     EditTodoToast();

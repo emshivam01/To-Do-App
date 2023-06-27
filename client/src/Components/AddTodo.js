@@ -38,9 +38,12 @@ const AddTodo = ({ newTodo, setNewTodo }) => {
     }
 
     try {
-      const res = await axios.post("http://localhost:4000/createTodo", {
-        title,
-      });
+      const res = await axios.post(
+        "https://todo-app-server-lime.vercel.app/createTodo",
+        {
+          title,
+        }
+      );
       setResponseBack(res.data);
       AddTodoToast();
       setNewTodo((newTodo) => newTodo + 1);

@@ -4,7 +4,7 @@ import { DeleteTaskToast } from "../../../Utils/Toasts/TaskToast";
 const deleteTask = async (taskId, newTodo, setNewTodo, id) => {
   try {
     const res = await axios.delete(
-      `http://localhost:4000/deleteTask/${id}/${taskId}`
+      `https://todo-app-server-lime.vercel.app/deleteTask/${id}/${taskId}`
     );
     console.log(res.data, taskId, id);
     DeleteTaskToast();
