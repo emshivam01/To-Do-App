@@ -4,8 +4,6 @@ const createTask = async (req, res) => {
   const { taskDesc } = req.body;
   const { id } = req.params;
 
-  console.log(taskDesc);
-
   try {
     const todo = await Todo.findById(id);
     if (!todo) {
