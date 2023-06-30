@@ -1,6 +1,6 @@
 export const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center h-20 px-5 mb-20 md:px-14 py-14 ">
+    <nav className="flex justify-between items-center h-20 px-5 mb-10 md:px-14 py-14 ">
       <div>
         <a href=" " className="text-white font-bold text-2xl md:text-3xl">
           TaskWiz

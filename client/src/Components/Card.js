@@ -74,9 +74,12 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
     }
 
     try {
-      const res = await axios.put(`https://todo-app-server-lime.vercel.app/editTodo/${id}`, {
-        title: newTitle,
-      });
+      const res = await axios.put(
+        `https://todo-app-server-lime.vercel.app/editTodo/${id}`,
+        {
+          title: newTitle,
+        }
+      );
       setResponseBack(res.data);
       setNewTodo((newTodo) => newTodo + 1);
       EditTodoToast();
@@ -106,7 +109,7 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
   return (
     <div
       ref={cardRef}
-      className="bg-[#252525] h-fit w-80 lg:w-96  mx-5 my-8 p-4 md:p-6 rounded-md flex flex-col  "
+      className="bg-[#252525] h-fit w-full lg:w-96  mx-5 my-3 p-4 md:p-6 rounded-md flex flex-col  "
     >
       <div className="flex justify-between items-center gap-2">
         <h2 className="text-white text-xl md:text-2xl font-medium truncate">

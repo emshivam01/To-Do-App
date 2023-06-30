@@ -12,16 +12,14 @@ const Body = ({ newTodo, setNewTodo }) => {
         "https://todo-app-server-lime.vercel.app/getTodos"
       );
       setTodos(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     fetchTodos();
   }, [newTodo]);
 
   return (
-    <div className="flex flex-wrap justify-center md:justify-start lg:justify-items-start flex-auto mx-5 md:mx-28 my-10">
+    <div className="flex flex-wrap justify-center md:justify-start lg:justify-items-start flex-auto mx-5 md:mx-28 my-4">
       {todos.map((todo) => {
         return (
           <Card
