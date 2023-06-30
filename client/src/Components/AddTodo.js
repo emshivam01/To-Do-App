@@ -10,7 +10,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 350,
   bgcolor: "#252525",
   border: "2px solid #000",
   borderRadius: "6px",
@@ -73,17 +73,17 @@ const AddTodo = ({ newTodo, setNewTodo }) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box className="" sx={style}>
+          <Box className="" sx={style} >
             <form onSubmit={createTodo}>
               <input
-                className="w-full border-[1px] rounded-md bg-[#252525] text-xl text-white placeholder:text-xl p-5 focus:outline-none"
+                className="w-full border-[1px] rounded-md bg-[#252525] text-xl text-white placeholder:text-xl px-4 py-3 focus:outline-none"
                 type="text"
                 placeholder="Enter title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <button
-                className="w-full mt-8 text-white bg-blue-600 px-5 py-2 rounded-md m-auto"
+                className="w-full mt-6 text-white bg-blue-600 px-5 py-2 rounded-md m-auto"
                 type="submit"
               >
                 Submit
