@@ -55,13 +55,11 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Todo not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        status: "success",
-        data: todo,
-        message: "Task successfully deleted",
-      });
+    res.status(200).json({
+      status: "success",
+      data: todo,
+      message: "Task successfully deleted",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
