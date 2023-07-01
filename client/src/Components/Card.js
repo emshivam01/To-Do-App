@@ -6,10 +6,12 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import { style, style2, style3 } from "./Helpers/MaterialUI Style/style";
 import { EditTodoToast, EmptyTodoToast } from "../Utils/Toasts/TodoToast";
 
 import deleteTodo from "./Helpers/TodoHelper/deleteTodo";
 import deleteTask from "./Helpers/TaskHelper/DeleteTask";
+
 import createTask from "./Helpers/TaskHelper/CreateTask";
 
 const styleModal = {
@@ -17,28 +19,13 @@ const styleModal = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 320,
   bgcolor: "#252525",
   border: "2px solid #000",
   borderRadius: "6px",
   boxShadow: 24,
   color: "#fff",
   p: 4,
-};
-
-const style = {
-  width: "25px",
-  height: "25px",
-};
-
-const style2 = {
-  width: "20px",
-  height: "20px",
-};
-
-const style3 = {
-  width: "30px",
-  height: "30px",
 };
 
 const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
@@ -57,11 +44,6 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
 
   const handleEditModal = () => {
     setEditModalOpen(editModalOpem ? false : true);
-  };
-
-  const handleCreateTask = (e) => {
-    e.preventDefault();
-    createTask(fetchTodos, task, setTask, setIsOpen, setResponseBack, id);
   };
 
   const editTodo = async (e) => {
@@ -90,6 +72,11 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
     // Clear the input field after submission
     setNewTitle("");
     setEditModalOpen(editModalOpem ? false : true);
+  };
+
+  const handleCreateTask = (e) => {
+    e.preventDefault();
+    createTask(task,setTask, id, fetchTodos, setIsOpen, isOpen);
   };
 
   useEffect(() => {
@@ -182,7 +169,7 @@ const Card = ({ title, tasks, id, fetchTodos, newTodo, setNewTodo }) => {
       {isDropDown && (
         <button
           onClick={handleToggle}
-          className="w-40 mt-8 text-xl  text-white bg-blue-600 px-5 py-2 rounded-md m-auto"
+          className="w-24 mt-8 text-lg  text-white bg-blue-600 px-2 py-1 rounded-md m-auto"
         >
           Add Task
         </button>
